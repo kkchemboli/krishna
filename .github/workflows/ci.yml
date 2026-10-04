@@ -1,21 +1,34 @@
 name: CI Pipeline
-on :
-    push :
-      branches:
-        - main
-    pull_request:
-      branches:
-        - main
-    
-jobs : 
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses : actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name : Display Message
-        run: echo "Continous Integration Pipeline Executed Successfully"
+      - name: Display Message
+        run: echo "Continuous Integration Pipeline Executed Successfully"
 
       - name: List Files
-        run : ls
+        run: ls
+
+      - name: Install HTML Validator
+        run: npm install -g html-validate
+
+      - name: Build
+        run: |
+          mkdir -p build
+          cp index.html build/
+          html-validate index.html
+
+      - name: List Build Files
+        run: ls -la build
